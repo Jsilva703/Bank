@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PersonData, Transaction } from './types';
 import { Header } from './components/Header';
 import { FinancePanel } from './components/FinancePanel';
-import { AiAssistant } from './components/AiAssistant';
-import { PdfGenerator } from './components/PdfGenerator';
+import { ActionPanel } from './components/ActionPanel';
 
 const initialPersonData: PersonData = {
   name: 'Meu Painel',
@@ -18,7 +17,6 @@ const App: React.FC = () => {
       const savedData = localStorage.getItem('financeData');
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        // Basic validation
         if (parsedData.name && Array.isArray(parsedData.transactions)) {
           return parsedData;
         }
@@ -63,6 +61,23 @@ const App: React.FC = () => {
       transactions: [...prevData.transactions, newTransaction],
     }));
   };
+  
+  const handleUpdateTransaction = (updatedTransaction: Transaction) => {
+    setPersonData(prevData => ({
+        ...prevData,
+        transactions: prevData.transactions.map(t => 
+            t.id === updatedTransaction.id ? updatedTransaction : t
+        ),
+    }));
+  };
+
+  const handleDeleteTransaction = (transactionId: string) => {
+    setPersonData(prevData => ({
+        ...prevData,
+        transactions: prevData.transactions.filter(t => t.id !== transactionId),
+    }));
+  };
+
 
   const handleNameChange = (newName: string) => {
     setPersonData(prevData => ({
@@ -89,13 +104,14 @@ const App: React.FC = () => {
             <FinancePanel 
               personData={personData} 
               onAddTransaction={handleAddTransaction}
+              onUpdateTransaction={handleUpdateTransaction}
+              onDeleteTransaction={handleDeleteTransaction}
               onNameChange={handleNameChange}
             />
           </div>
         
-          <div className="lg:col-span-2 flex flex-col gap-8">
-            <AiAssistant personData={personData} />
-            <PdfGenerator personData={personData} />
+          <div className="lg:col-span-2">
+             <ActionPanel personData={personData} />
           </div>
         </div>
 
