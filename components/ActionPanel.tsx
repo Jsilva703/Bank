@@ -21,10 +21,10 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ personData }) => {
     }> = ({ label, tabName, icon }) => (
         <button
             onClick={() => setActiveTab(tabName)}
-            className={`flex-1 flex items-center justify-center gap-2 p-3 font-semibold rounded-t-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+            className={`flex-1 flex items-center justify-center gap-2 p-3 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 dark:focus:ring-offset-slate-800 border-b-2 ${
                 activeTab === tabName
-                    ? 'bg-white dark:bg-gray-800 text-brand-primary dark:text-blue-400'
-                    : 'bg-gray-100 dark:bg-gray-700/50 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'border-brand-primary text-brand-primary dark:text-blue-400'
+                    : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
             }`}
             aria-selected={activeTab === tabName}
             role="tab"
@@ -35,8 +35,8 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ personData }) => {
     );
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full">
-            <div className="flex" role="tablist">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg w-full border border-slate-200 dark:border-slate-700">
+            <div className="flex border-b border-slate-200 dark:border-slate-700" role="tablist">
                 <TabButton
                     label="Assistente"
                     tabName="assistant"

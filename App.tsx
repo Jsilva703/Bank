@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { PersonData, Transaction } from './types';
+import React, { useState, useEffect, useMemo } from 'react';
+import { PersonData, Transaction, SavingsGoal } from './types';
 import { Header } from './components/Header';
 import { FinancePanel } from './components/FinancePanel';
 import { ActionPanel } from './components/ActionPanel';
+import { AnalysisDashboard } from './components/AnalysisDashboard';
+import { SavingsGoalPanel } from './components/SavingsGoalPanel';
 
 const initialPersonData: PersonData = {
   name: 'Meu Painel',
   transactions: [],
+  savingsGoals: [],
 };
 
 type Theme = 'light' | 'dark';
@@ -17,9 +20,11 @@ const App: React.FC = () => {
       const savedData = localStorage.getItem('financeData');
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        if (parsedData.name && Array.isArray(parsedData.transactions)) {
-          return parsedData;
-        }
+        return {
+          name: parsedData.name || 'Meu Painel',
+          transactions: parsedData.transactions || [],
+          savingsGoals: parsedData.savingsGoals || [],
+        };
       }
     } catch (error) {
       console.error("Falha ao carregar dados do localStorage", error);
@@ -49,57 +54,79 @@ const App: React.FC = () => {
     localStorage.setItem('financeData', JSON.stringify(personData));
   }, [personData]);
 
+  const balance = useMemo(() => {
+    const income = personData.transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+    const expense = personData.transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
+    return income - expense;
+  }, [personData.transactions]);
+
   const handleAddTransaction = (transactionData: Omit<Transaction, 'id' | 'date'>) => {
     const newTransaction: Transaction = {
       ...transactionData,
       id: `tx-${new Date().getTime()}`,
       date: new Date().toISOString(),
     };
-
-    setPersonData(prevData => ({
-      ...prevData,
-      transactions: [...prevData.transactions, newTransaction],
-    }));
+    setPersonData(prevData => ({ ...prevData, transactions: [...prevData.transactions, newTransaction] }));
   };
   
   const handleUpdateTransaction = (updatedTransaction: Transaction) => {
-    setPersonData(prevData => ({
-        ...prevData,
-        transactions: prevData.transactions.map(t => 
-            t.id === updatedTransaction.id ? updatedTransaction : t
-        ),
-    }));
+    setPersonData(prevData => ({ ...prevData, transactions: prevData.transactions.map(t => t.id === updatedTransaction.id ? updatedTransaction : t) }));
   };
 
   const handleDeleteTransaction = (transactionId: string) => {
-    setPersonData(prevData => ({
-        ...prevData,
-        transactions: prevData.transactions.filter(t => t.id !== transactionId),
-    }));
+    setPersonData(prevData => ({ ...prevData, transactions: prevData.transactions.filter(t => t.id !== transactionId) }));
   };
-
 
   const handleNameChange = (newName: string) => {
-    setPersonData(prevData => ({
-      ...prevData,
-      name: newName,
-    }));
+    setPersonData(prevData => ({ ...prevData, name: newName }));
   };
   
+  const handleAddSavingsGoal = (goal: Omit<SavingsGoal, 'id' | 'currentAmount'>) => {
+    const newGoal: SavingsGoal = {
+        ...goal,
+        id: `sg-${new Date().getTime()}`,
+        currentAmount: 0,
+    };
+    setPersonData(prevData => ({...prevData, savingsGoals: [...prevData.savingsGoals, newGoal] }));
+  };
+
+  const handleDepositToSavingsGoal = (goalId: string, amount: number) => {
+    const goal = personData.savingsGoals.find(g => g.id === goalId);
+    if (!goal) return;
+
+    const newTransaction: Transaction = {
+      id: `tx-${new Date().getTime()}`,
+      date: new Date().toISOString(),
+      description: `Depósito para meta: ${goal.name}`,
+      amount: amount,
+      type: 'expense',
+      category: 'Poupança',
+    };
+
+    setPersonData(prevData => {
+        const updatedGoals = prevData.savingsGoals.map(sg => 
+            sg.id === goalId 
+                ? { ...sg, currentAmount: sg.currentAmount + amount } 
+                : sg
+        );
+
+        return {
+            ...prevData,
+            transactions: [...prevData.transactions, newTransaction],
+            savingsGoals: updatedGoals,
+        };
+    });
+  };
+
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <div className="min-h-screen bg-brand-background dark:bg-gray-900 text-brand-text dark:text-gray-200 font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans transition-colors duration-300">
       <Header currentTheme={theme} toggleTheme={toggleTheme} />
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="text-center mb-12">
-            <h2 className="text-4xl font-extrabold text-gray-800 dark:text-gray-100 tracking-tight">Seu Painel Financeiro</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-2 max-w-2xl mx-auto">Tudo o que você precisa para tomar controle das suas finanças em um só lugar.</p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
           <div className="lg:col-span-3">
             <FinancePanel 
               personData={personData} 
@@ -110,13 +137,20 @@ const App: React.FC = () => {
             />
           </div>
         
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
+             <AnalysisDashboard personData={personData} />
+             <SavingsGoalPanel 
+                savingsGoals={personData.savingsGoals}
+                onAddGoal={handleAddSavingsGoal}
+                onDepositToGoal={handleDepositToSavingsGoal}
+                currentBalance={balance}
+             />
              <ActionPanel personData={personData} />
           </div>
         </div>
 
-        <footer className="text-center mt-16 py-8 border-t dark:border-gray-700">
-            <p className="text-gray-500 dark:text-gray-400">© {new Date().getFullYear()} Minhas Contas. Simplificando sua vida financeira.</p>
+        <footer className="text-center mt-16 py-8 border-t border-slate-200 dark:border-slate-800">
+            <p className="text-sm text-slate-500 dark:text-slate-400">© {new Date().getFullYear()} Minhas Contas. Simplificando sua vida financeira.</p>
         </footer>
       </main>
     </div>

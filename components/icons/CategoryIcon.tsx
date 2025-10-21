@@ -10,6 +10,7 @@ import { OtherIcon } from './OtherIcon';
 import { SalaryIcon } from './SalaryIcon';
 import { InvestmentsIcon } from './InvestmentsIcon';
 import { SalesIcon } from './SalesIcon';
+import { PiggyBankIcon } from './PiggyBankIcon';
 
 export const CategoryIcon: React.FC<{ category: string; }> = ({ category }) => {
     const commonClasses = "h-8 w-8 text-white p-1.5 rounded-lg";
@@ -28,12 +29,14 @@ export const CategoryIcon: React.FC<{ category: string; }> = ({ category }) => {
             return <EducationIcon className={`${commonClasses} bg-indigo-500`} />;
         case 'Contas':
             return <BillsIcon className={`${commonClasses} bg-cyan-500`} />;
+        case 'Poupança':
+             return <PiggyBankIcon className={`${commonClasses} bg-purple-500`} />;
         case 'Salário':
             return <SalaryIcon className={`${commonClasses} bg-green-500`} />;
         case 'Investimentos':
             return <InvestmentsIcon className={`${commonClasses} bg-teal-500`} />;
         case 'Vendas':
-            return <SalesIcon className={`${commonClasses} bg-purple-500`} />;
+            return <SalesIcon className={`${commonClasses} bg-pink-500`} />;
         default:
             return <OtherIcon className={`${commonClasses} bg-gray-500`} />;
     }

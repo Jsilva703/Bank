@@ -20,7 +20,7 @@ export const getFinancialAnalysis = (personData: PersonData): Promise<string> =>
         section += "**Atenção:** Você possui contas que já venceram. Pagar contas em atraso pode gerar multas e juros. Priorize o pagamento delas o mais rápido possível.\n\n";
         section += "**Contas vencidas:**\n";
         overdueBills.forEach(t => {
-          section += `* ${t.description} (Venceu em ${new Date(t.dueDate!).toLocaleDateString('pt-BR')}) - R$ ${t.amount.toFixed(2)}\n`;
+          section += `* ${t.description} (Venceu em ${new Date(t.dueDate!).toLocaleDateString('pt-BR')}) - ${t.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`;
         });
         analysisParts.push(section);
       }
@@ -41,7 +41,7 @@ export const getFinancialAnalysis = (personData: PersonData): Promise<string> =>
         section += "**Fique de olho!** As seguintes contas vencem em breve. Organize-se para não perder o prazo.\n\n";
         section += "**Contas a vencer:**\n";
         upcomingBills.forEach(t => {
-          section += `* ${t.description} (Vence em ${new Date(t.dueDate!).toLocaleDateString('pt-BR')}) - R$ ${t.amount.toFixed(2)}\n`;
+          section += `* ${t.description} (Vence em ${new Date(t.dueDate!).toLocaleDateString('pt-BR')}) - ${t.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`;
         });
         analysisParts.push(section);
       }
@@ -57,7 +57,7 @@ export const getFinancialAnalysis = (personData: PersonData): Promise<string> =>
         
         if (highestCategory) {
             let section = "# 📊 Análise de Gastos\n\n";
-            section += `**Onde seu dinheiro está indo?** Sua maior despesa é com **${highestCategory[0]}**, totalizando **R$ ${highestCategory[1].toFixed(2)}**.\n\n`;
+            section += `**Onde seu dinheiro está indo?** Sua maior despesa é com **${highestCategory[0]}**, totalizando **${highestCategory[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}**.\n\n`;
             section += "* Avalie se é possível reduzir despesas nessa área. Pequenos cortes podem fazer uma grande diferença no final do mês.";
             analysisParts.push(section);
         }
@@ -71,17 +71,17 @@ export const getFinancialAnalysis = (personData: PersonData): Promise<string> =>
       if (income > 0 || expenseTotal > 0) {
           if (expenseTotal > income) {
               let section = "# ⚖️ Balanço Mensal\n\n";
-              section += `**Atenção, saldo negativo!** Suas despesas (R$ ${expenseTotal.toFixed(2)}) foram maiores que suas receitas (R$ ${income.toFixed(2)}). É importante reavaliar seus gastos.\n\n`;
+              section += `**Atenção, saldo negativo!** Suas despesas (${expenseTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}) foram maiores que suas receitas (${income.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}). É importante reavaliar seus gastos.\n\n`;
               section += "* Reveja seu orçamento e identifique onde pode economizar para reverter essa situação.";
               analysisParts.push(section);
           } else if (income > 0 && expenseTotal > income * 0.8) {
               let section = "# ⚖️ Balanço Mensal\n\n";
-              section += `**Cuidado com o orçamento!** Suas despesas (R$ ${expenseTotal.toFixed(2)}) representam mais de 80% da sua receita (R$ ${income.toFixed(2)}). Isso pode deixar pouco espaço para imprevistos e para poupar.\n\n`;
+              section += `**Cuidado com o orçamento!** Suas despesas (${expenseTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}) representam mais de 80% da sua receita (${income.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}). Isso pode deixar pouco espaço para imprevistos e para poupar.\n\n`;
               section += "* Tente identificar gastos não essenciais que podem ser cortados ou reduzidos.";
               analysisParts.push(section);
           } else if (income > 0 && balance >= 0) {
               let section = "# 💰 Saldo Positivo!\n\n";
-              section += `**Bom trabalho!** Você manteve um saldo positivo de **R$ ${balance.toFixed(2)}**.\n\n`;
+              section += `**Bom trabalho!** Você manteve um saldo positivo de **${balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}**.\n\n`;
               section += "* Considere usar parte desse valor para começar uma reserva de emergência ou para investir em seus objetivos de longo prazo.";
               analysisParts.push(section);
           }
