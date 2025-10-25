@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="font-semibold text-slate-800 dark:text-slate-200">
           {data.name}
         </p>
-        <p className="text-sm text-brand-primary dark:text-blue-400">
+        <p className="text-sm text-brand-secondary dark:text-teal-300">
           R$ {data.value.toFixed(2)} ({percentage}%)
         </p>
       </div>
@@ -76,7 +76,7 @@ export const AnalysisDashboard: React.FC<{ personData: PersonData }> = ({
 
   return (
     <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700">
-      <h2 className="text-2xl font-bold text-brand-primary dark:text-blue-400 mb-1 flex items-center gap-2">
+      <h2 className="text-2xl font-bold text-brand-secondary dark:text-teal-300 mb-1 flex items-center gap-2">
         <ChartPieIcon className="h-6 w-6" /> Análise de Despesas
       </h2>
       <p className="text-slate-600 dark:text-slate-400 mb-6">
@@ -136,7 +136,7 @@ export const AnalysisDashboard: React.FC<{ personData: PersonData }> = ({
                   <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                     R$ {activeData.value.toFixed(2)}
                   </p>
-                  <p className="text-xs font-semibold text-brand-primary dark:text-blue-400">
+                  <p className="text-xs font-semibold text-brand-secondary dark:text-teal-300">
                     {totalExpense > 0
                       ? ((activeData.value / totalExpense) * 100).toFixed(0)
                       : 0}

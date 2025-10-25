@@ -99,7 +99,7 @@ export const PdfGenerator: React.FC<{ personData: PersonData }> = ({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-brand-primary dark:text-blue-400 mb-1">
+      <h2 className="text-2xl font-bold text-brand-secondary dark:text-teal-300 mb-1">
         Seus Dados. Seus Relatórios.
       </h2>
       <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -110,7 +110,7 @@ export const PdfGenerator: React.FC<{ personData: PersonData }> = ({
         <button
           onClick={generatePdf}
           disabled={isLoading}
-          className="w-full bg-brand-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-wait"
+          className="w-full bg-gradient-to-r from-brand-secondary to-primary-500 hover:from-teal-600 hover:to-primary-600 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-wait"
         >
           <DocumentArrowDownIcon className="h-5 w-5" />
           {isLoading ? "Gerando Relatório..." : "Gerar Relatório em PDF"}

@@ -83,7 +83,7 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({ personData }) => {
   return (
     <div>
       <div className="flex items-center mb-4">
-        <h2 className="text-2xl font-bold text-brand-primary dark:text-blue-400">
+        <h2 className="text-2xl font-bold text-brand-primary dark:text-white">
           Assistente Financeiro
         </h2>
       </div>
@@ -94,7 +94,7 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({ personData }) => {
       <button
         onClick={handleGenerateAnalysis}
         disabled={isLoading || !hasExpenses}
-        className="w-full flex justify-center items-center bg-brand-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-500 transition-all shadow-md active:scale-95 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none"
+        className="w-full flex justify-center items-center bg-gradient-to-r from-brand-accent to-accent-600 hover:from-accent-700 hover:to-accent-700 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-elegant hover:shadow-elegant-lg active:scale-95 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none"
       >
         {isLoading ? (
           <>

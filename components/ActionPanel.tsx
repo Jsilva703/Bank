@@ -23,7 +23,7 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ personData }) => {
             onClick={() => setActiveTab(tabName)}
             className={`flex-1 flex items-center justify-center gap-2 p-3 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 dark:focus:ring-offset-slate-800 border-b-2 ${
                 activeTab === tabName
-                    ? 'border-brand-primary text-brand-primary dark:text-blue-400'
+                    ? 'border-brand-secondary text-brand-secondary dark:text-teal-300'
                     : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
             }`}
             aria-selected={activeTab === tabName}

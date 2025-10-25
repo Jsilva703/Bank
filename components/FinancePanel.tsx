@@ -88,8 +88,8 @@ const EditTransactionRow: React.FC<{
     };
 
     return (
-        <li className="p-3 rounded-lg bg-blue-50 dark:bg-slate-700/50 border-l-4 border-brand-primary animate-pulse-fast">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <li className="p-3 rounded-lg bg-primary-50 dark:bg-slate-700/50 border-l-4 border-brand-primary animate-pulse-fast">
+            <div className="space-y-3">
                 <input type="text" value={edited.description} onChange={e => setEdited({...edited, description: e.target.value})} placeholder="Descrição" className="w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm p-2 focus:ring-brand-primary focus:border-brand-primary"/>
                 <input type="number" value={edited.amount} onChange={e => setEdited({...edited, amount: parseFloat(e.target.value) || 0})} placeholder="Valor" className="w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm p-2 focus:ring-brand-primary focus:border-brand-primary"/>
                 <select value={edited.category} onChange={e => setEdited({...edited, category: e.target.value})} className="w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm p-2 focus:ring-brand-primary focus:border-brand-primary">
@@ -99,7 +99,7 @@ const EditTransactionRow: React.FC<{
             </div>
             <div className="flex justify-end gap-2 mt-3">
                 <button onClick={onCancel} className="px-3 py-1 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-200 dark:bg-slate-600 rounded-md hover:bg-slate-300 dark:hover:bg-slate-500">Cancelar</button>
-                <button onClick={handleSave} className="px-3 py-1 text-sm font-semibold text-white bg-brand-primary rounded-md hover:bg-blue-600">Salvar</button>
+                <button onClick={handleSave} className="px-3 py-1 text-sm font-semibold text-white bg-brand-primary rounded-md hover:bg-primary-600">Salvar</button>
             </div>
         </li>
     );
@@ -239,31 +239,47 @@ export const FinancePanel: React.FC<FinancePanelProps> = ({ personData, onAddTra
             onChange={(e) => onNameChange(e.target.value)}
             placeholder="Nome do Painel"
             aria-label={`Nome do painel, atualmente ${personData.name}`}
-            className="text-2xl font-bold text-brand-primary dark:text-blue-400 w-full bg-transparent focus:bg-slate-100 dark:focus:bg-slate-700 rounded-md p-1 -ml-1 transition-colors outline-none focus:ring-2 focus:ring-brand-primary"
+            className="text-2xl font-bold text-brand-primary dark:text-primary-400 w-full bg-transparent focus:bg-slate-100 dark:focus:bg-slate-700 rounded-md p-1 -ml-1 transition-colors outline-none focus:ring-2 focus:ring-brand-primary"
         />
         <PencilIcon className="h-5 w-5 text-slate-400 flex-shrink-0" />
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="p-4 bg-green-500/10 rounded-lg flex items-center gap-4">
-          <div className="p-2 bg-green-500/20 rounded-full"><ArrowUpCircleIcon className="h-6 w-6 text-green-700 dark:text-green-300" /></div>
-          <div>
-            <p className="text-sm text-green-700 dark:text-green-300 font-semibold">Receitas</p>
-            <p className="text-xl font-bold text-green-800 dark:text-green-200">{formatCurrency(income)}</p>
+      <div className="space-y-4 mb-8">
+        <div className="bg-green-500/10 rounded-xl p-6 border border-green-200 dark:border-green-800">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-green-500/20 rounded-full">
+              <ArrowUpCircleIcon className="h-6 w-6 text-green-700 dark:text-green-300" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-green-700 dark:text-green-300 font-semibold mb-1">Receitas</p>
+              <p className="text-2xl font-bold text-green-800 dark:text-green-200">{formatCurrency(income)}</p>
+            </div>
           </div>
         </div>
-        <div className="p-4 bg-red-500/10 rounded-lg flex items-center gap-4">
-          <div className="p-2 bg-red-500/20 rounded-full"><ArrowDownCircleIcon className="h-6 w-6 text-red-700 dark:text-red-300" /></div>
-          <div>
-            <p className="text-sm text-red-700 dark:text-red-300 font-semibold">Despesas</p>
-            <p className="text-xl font-bold text-red-800 dark:text-red-200">{formatCurrency(expense)}</p>
+        
+        <div className="bg-red-500/10 rounded-xl p-6 border border-red-200 dark:border-red-800">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-red-500/20 rounded-full">
+              <ArrowDownCircleIcon className="h-6 w-6 text-red-700 dark:text-red-300" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-red-700 dark:text-red-300 font-semibold mb-1">Despesas</p>
+              <p className="text-2xl font-bold text-red-800 dark:text-red-200">{formatCurrency(expense)}</p>
+            </div>
           </div>
         </div>
-        <div className="p-4 bg-blue-500/10 rounded-lg flex items-center gap-4">
-          <div className="p-2 bg-blue-500/20 rounded-full"><ScaleIcon className="h-6 w-6 text-blue-700 dark:text-blue-300" /></div>
-          <div>
-            <p className="text-sm text-blue-700 dark:text-blue-300 font-semibold">Saldo</p>
-            <p className={`text-xl font-bold ${balance >= 0 ? 'text-blue-800 dark:text-blue-200' : 'text-red-800 dark:text-red-200'}`}>{formatCurrency(balance)}</p>
+        
+        <div className="bg-primary-500/10 rounded-xl p-6 border border-primary-200 dark:border-primary-800">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-primary-500/20 rounded-full">
+              <ScaleIcon className="h-6 w-6 text-primary-700 dark:text-primary-300" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-primary-700 dark:text-primary-300 font-semibold mb-1">Saldo</p>
+              <p className={`text-2xl font-bold ${balance >= 0 ? 'text-primary-800 dark:text-primary-200' : 'text-red-800 dark:text-red-200'}`}>
+                {formatCurrency(balance)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -272,7 +288,7 @@ export const FinancePanel: React.FC<FinancePanelProps> = ({ personData, onAddTra
         <div className="flex border-b-2 border-slate-200 dark:border-slate-700 mb-4">
             <button 
                 onClick={() => handleFormTypeChange('expense')}
-                className={`flex-1 pb-2 text-center font-semibold transition-colors border-b-4 ${formType === 'expense' ? 'border-brand-primary text-brand-primary dark:text-blue-400' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+                className={`flex-1 pb-2 text-center font-semibold transition-colors border-b-4 ${formType === 'expense' ? 'border-brand-secondary text-brand-secondary dark:text-teal-300' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
             >
                 Nova Despesa
             </button>
@@ -321,7 +337,7 @@ export const FinancePanel: React.FC<FinancePanelProps> = ({ personData, onAddTra
             )}
             <div className="md:col-span-2 mt-2">
               {successMessage && (<div className="flex items-center gap-2 p-3 mb-4 bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-200 rounded-lg border border-green-200 dark:border-green-700"><CheckIcon className="h-5 w-5" /><p className="font-semibold text-sm">{successMessage}</p></div>)}
-              <button type="submit" className="w-full transform rounded-lg bg-brand-primary px-4 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-md transition-all hover:bg-blue-600 hover:shadow-lg active:scale-95 dark:hover:bg-blue-500 flex items-center justify-center gap-2"><PlusIcon className="h-5 w-5" />Adicionar Transação</button>
+              <button type="submit" className="w-full transform rounded-lg bg-gradient-to-r from-brand-secondary to-primary-500 hover:from-teal-600 hover:to-primary-600 px-4 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-md transition-all hover:shadow-lg active:scale-95 flex items-center justify-center gap-2"><PlusIcon className="h-5 w-5" />Adicionar Transação</button>
             </div>
           </div>
         </form>

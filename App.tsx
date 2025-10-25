@@ -3,7 +3,7 @@ import { PersonData, Transaction, SavingsGoal } from './types';
 import { Header } from './components/Header';
 import { FinancePanel } from './components/FinancePanel';
 import { ActionPanel } from './components/ActionPanel';
-import { AnalysisDashboard } from './components/AnalysisDashboard';
+import { CombinedView } from './components/CombinedView';
 import { SavingsGoalPanel } from './components/SavingsGoalPanel';
 
 const initialPersonData: PersonData = {
@@ -124,10 +124,10 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans transition-colors duration-300">
-      <Header currentTheme={theme} toggleTheme={toggleTheme} />
+      <Header currentTheme={theme} toggleTheme={toggleTheme} balance={balance} />
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start min-h-screen">
+          <div className="lg:col-span-2">
             <FinancePanel 
               personData={personData} 
               onAddTransaction={handleAddTransaction}
@@ -137,15 +137,19 @@ const App: React.FC = () => {
             />
           </div>
         
-          <div className="lg:col-span-2 space-y-8">
-             <AnalysisDashboard personData={personData} />
-             <SavingsGoalPanel 
+          <div className="lg:col-span-3 space-y-8">
+            <div className="min-h-[700px]">
+              <CombinedView personData={personData} />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <SavingsGoalPanel 
                 savingsGoals={personData.savingsGoals}
                 onAddGoal={handleAddSavingsGoal}
                 onDepositToGoal={handleDepositToSavingsGoal}
                 currentBalance={balance}
-             />
-             <ActionPanel personData={personData} />
+              />
+              <ActionPanel personData={personData} />
+            </div>
           </div>
         </div>
 
